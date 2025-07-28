@@ -52,7 +52,7 @@ const Contact = () => {
         />
         <ContactItem
           icon={<FaLinkedin className="text-blue-500" />}
-          text="linkedin.com/in/faizan-sultan-302b1b24b"
+          text="pk.linkedin.com/in/faizan-sultan-302b1b24b"
           link="https://pk.linkedin.com/in/faizan-sultan-302b1b24b"
           color="hover:text-blue-400"
         />
