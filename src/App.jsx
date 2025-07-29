@@ -33,14 +33,53 @@ const App = () => {
   };
 
   const botMove = (updatedBoard) => {
-    const emptyIndices = updatedBoard
-      .map((val, idx) => (val === null ? idx : null))
-      .filter((val) => val !== null);
-
-    const randomIndex = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
-    if (randomIndex !== undefined) {
-      updatedBoard[randomIndex] = "O";
+    // Check if bot can win in the next move
+    for (let i = 0; i < 9; i++) {
+      if (updatedBoard[i] === null) {
+        updatedBoard[i] = "O";
+        if (checkWinner(updatedBoard) === "O") {
+          return updatedBoard;
+        }
+        updatedBoard[i] = null;
+      }
     }
+
+    // Check if player can win in the next move and block them
+    for (let i = 0; i < 9; i++) {
+      if (updatedBoard[i] === null) {
+        updatedBoard[i] = "X";
+        if (checkWinner(updatedBoard) === "X") {
+          updatedBoard[i] = "O";
+          return updatedBoard;
+        }
+        updatedBoard[i] = null;
+      }
+    }
+
+    // Try to take the center if available
+    if (updatedBoard[4] === null) {
+      updatedBoard[4] = "O";
+      return updatedBoard;
+    }
+
+    // Try to take a corner if available
+    const corners = [0, 2, 6, 8];
+    const availableCorners = corners.filter((i) => updatedBoard[i] === null);
+    if (availableCorners.length > 0) {
+      const randomCorner = availableCorners[Math.floor(Math.random() * availableCorners.length)];
+      updatedBoard[randomCorner] = "O";
+      return updatedBoard;
+    }
+
+    // Take any available edge
+    const edges = [1, 3, 5, 7];
+    const availableEdges = edges.filter((i) => updatedBoard[i] === null);
+    if (availableEdges.length > 0) {
+      const randomEdge = availableEdges[Math.floor(Math.random() * availableEdges.length)];
+      updatedBoard[randomEdge] = "O";
+      return updatedBoard;
+    }
+
     return updatedBoard;
   };
 
@@ -162,7 +201,7 @@ const App = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.8 }}
             >
-              You don’t grow when you’re comfortable. Get up and do the hard things.
+              You don't grow when you're comfortable. Get up and do the hard things.
             </motion.p>
             <motion.p
               className="text-xs text-gray-500 text-center mb-6"
